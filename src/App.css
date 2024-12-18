@@ -1,0 +1,26 @@
+/* styles.css */
+@keyframes donut-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    display: inline-block;
+    border: 4px solid #3067F0;
+    border-left-color: transparent;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: donut-spin 1.2s linear infinite;
+}
+
+.coin-reset-loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

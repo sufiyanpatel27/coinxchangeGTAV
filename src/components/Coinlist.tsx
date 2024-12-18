@@ -10,7 +10,7 @@ import '../App.css'
 
 export default function Coinlist() {
 
-    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5500/";
 
     const dispatch = useDispatch<AppDispatch>();
     const allCoins = useSelector((state: RootState) => state.coin.allCoins);

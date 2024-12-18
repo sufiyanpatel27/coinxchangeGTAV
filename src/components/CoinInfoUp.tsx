@@ -17,7 +17,7 @@ export default function CoinInfoUp({ mode }: { mode: string }) {
     const currCoin: any = useSelector((state: RootState) => state.coin.currCoin);
 
 
-    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5500/";
 
     useEffect(() => {
         if (currCoin.name) {
@@ -117,7 +117,7 @@ export default function CoinInfoUp({ mode }: { mode: string }) {
                                 // Reset flag and set timeout
                                 setTimeout(() => {
                                     isFetching = false;
-                                }, 5000); // 5 seconds
+                                }, 5500); // 5 seconds
                             });
                     }
                 }

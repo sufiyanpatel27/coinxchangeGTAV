@@ -16,7 +16,7 @@ export default function HomePage() {
     const dispatch = useDispatch<AppDispatch>();
 
 
-    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5500/";
 
     const [mode, setMode] = useState(true)
     const [theme, setTheme] = useState("#1E2433")

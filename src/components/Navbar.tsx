@@ -35,7 +35,7 @@ export default function Navbar({ mode, handleTheme, activeTab }: { mode: boolean
         if (userSettings) {
             setTimeout(() => {
                 setUserSettings(false);
-            }, 5000);
+            }, 5500);
         }
     }, [userSettings]);
 

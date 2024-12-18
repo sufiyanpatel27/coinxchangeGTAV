@@ -12,7 +12,7 @@ export default function TradeInfo() {
     let navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+    const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5500/";
 
     const currCoin: any = useSelector((state: RootState) => state.coin.currCoin);
 

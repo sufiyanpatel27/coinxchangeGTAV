@@ -118,6 +118,18 @@ export default function TradeInfo() {
         }
     }
 
+    const formatNumber = (num: any) => {
+        if (Math.abs(num) >= 1.0e+9) {
+            return (num / 1.0e+9).toFixed(2) + "B"; // Billions
+        } else if (Math.abs(num) >= 1.0e+6) {
+            return (num / 1.0e+6).toFixed(2) + "M"; // Millions
+        } else if (Math.abs(num) >= 1.0e+3) {
+            return (num / 1.0e+3).toFixed(2) + "K"; // Thousands
+        } else {
+            return num.toString(); // Less than 1000
+        }
+    }
+
 
 
 
@@ -208,9 +220,9 @@ export default function TradeInfo() {
                             return (
                                 <div key={coin.symbol} className={`flex justify-between items-center h-12 pl-2 text-black dark:text-white ${trade === "profit" ? 'dark:bg-[rgba(30,55,50,1.0)] bg-[#DAEFE1] border-l-4 border-green-400' : 'dark:bg-[rgba(62,31,39,1.0)] bg-[#FAE9EA] border-l-4 border-red-400'}`}>
                                     <div className="w-full text-[12px] font-bold cursor-pointer flex">{coin.symbol}</div>
-                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{coin.totalBalance.toFixed(4)}</div>
-                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{coin.invested}</div>
-                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{currentPortfolio.toFixed(4)}</div>
+                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{formatNumber(coin.totalBalance.toFixed(4))}</div>
+                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{formatNumber(coin.invested)}</div>
+                                    <div className="w-full text-[12px] font-bold cursor-pointer flex">{formatNumber(currentPortfolio.toFixed(4))}</div>
                                 </div>
                             )
                         }

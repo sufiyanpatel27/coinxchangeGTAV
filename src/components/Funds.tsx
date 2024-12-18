@@ -62,6 +62,18 @@ export default function Funds() {
         })
     }
 
+    const formatNumber = (num: any) => {
+        if (Math.abs(num) >= 1.0e+9) {
+            return (num / 1.0e+9).toFixed(2) + "B"; // Billions
+        } else if (Math.abs(num) >= 1.0e+6) {
+            return (num / 1.0e+6).toFixed(2) + "M"; // Millions
+        } else if (Math.abs(num) >= 1.0e+3) {
+            return (num / 1.0e+3).toFixed(2) + "K"; // Thousands
+        } else {
+            return num.toString(); // Less than 1000
+        }
+    }
+
     useEffect(() => {
         document.title = "CoinXchange";
         let tempCryptoHoldings = 0;
@@ -125,28 +137,28 @@ export default function Funds() {
                     <div className='flex flex-wrap justify-center gap-3 w-full mt-10 text-sm'>
                         <div className='w-full sm:w-1/2 lg:w-[24%] rounded-md bg-secondary dark:bg-secondary-dark px-4 py-4 flex flex-col gap-2 justify-center'>
                             <h2 className='font-bold text-sm'>Total portfolio value</h2>
-                            <h2 className='font-bold text-xl'>${totalPortfolio.toFixed(4)}</h2>
+                            <h2 className='font-bold text-xl'>${formatNumber(totalPortfolio.toFixed(4))}</h2>
                         </div>
                         <div className='w-full sm:w-1/2 lg:w-[24%] rounded-md bg-secondary dark:bg-secondary-dark px-4 py-4 flex flex-col gap-2 justify-center'>
                             <div className='flex justify-between'>
                                 <h2 className='dark:text-[#cdd2df]'>Crypto Holdings</h2>
-                                <h2 className='font-bold'>${cryptoHoldings.toFixed(4)}</h2>
+                                <h2 className='font-bold'>${formatNumber(cryptoHoldings.toFixed(4))}</h2>
                             </div>
                             <div className='flex justify-between'>
                                 <h2 className='dark:text-[#cdd2df]'>Invested Value</h2>
-                                <h2 className='font-bold'>${investedValue.toFixed(4)}</h2>
+                                <h2 className='font-bold'>${formatNumber(investedValue.toFixed(4))}</h2>
                             </div>
                         </div>
                         <div className='w-full sm:w-1/2 lg:w-[24%] rounded-md bg-secondary dark:bg-secondary-dark px-4 py-4 flex justify-between items-center'>
                             <div className='dark:text-[#cdd2df] flex'>
                                 All time Gains
-                                <h2 className={`font-bold text-[12px] ml-2 px-1 ${trade === '+' ? 'text-[#66C37B]' : 'text-[#F6685E] bg-[#f6685e28]'}`}>{trade}{allTimeGains.toFixed(4)}%</h2>
+                                <h2 className={`font-bold text-[12px] ml-2 px-1 ${trade === '+' ? 'text-[#66C37B]' : 'text-[#F6685E] bg-[#f6685e28]'}`}>{trade}{allTimeGains.toFixed(2)}%</h2>
                             </div>
-                            <h2 className={`font-bold ${trade === '+' ? 'text-[#66C37B]' : 'text-[#F6685E]'}`}>${(cryptoHoldings - investedValue).toFixed(4)}</h2>
+                            <h2 className={`font-bold ${trade === '+' ? 'text-[#66C37B]' : 'text-[#F6685E]'}`}>${formatNumber((cryptoHoldings - investedValue).toFixed(4))}</h2>
                         </div>
                         <div className='w-full sm:w-1/2 lg:w-[24%] rounded-md bg-secondary dark:bg-secondary-dark px-4 py-4 flex justify-between items-center'>
                             <h2 className='dark:text-[#cdd2df]'>USD Balance</h2>
-                            <h2 className='font-bold'>${userInfo.userInfo.balance}</h2>
+                            <h2 className='font-bold'>${formatNumber(userInfo.userInfo.balance)}</h2>
                         </div>
                     </div>
 
@@ -185,7 +197,7 @@ export default function Funds() {
                                         // const average = (coin.invested + currentPortfolio) / 2;
                                         const percentageDiff = (difference / coin.invested) * 100;
                                         const trade = coin.invested < currentPortfolio ? "profit" : "loss";
-                                        const allTimeGains = percentageDiff.toFixed(4);
+                                        const allTimeGains = percentageDiff.toFixed(2);
 
                                         return (
                                             <tr key={index} className={`${index % 2 === 0 ? 'dark:bg-[#1E2433]' : 'dark:bg-[#161D2B]'} hover:bg-[#1E2433] hover:border-y border-[#6f717560]`}>
@@ -193,11 +205,11 @@ export default function Funds() {
                                                     <h2 className='font-bold'>{coin.name}</h2>
                                                     <h2 className='font-thin pt-1 text-sm text-[#ABB1BF]'>{coin.symbol}</h2>
                                                 </td>
-                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">{coin.totalBalance.toFixed(4)} {coin.symbol}</td>
-                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">${coin.invested}</td>
-                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">${currentPortfolio.toFixed(4)}</td>
+                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">{formatNumber(coin.totalBalance.toFixed(4))} {coin.symbol}</td>
+                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">$ {formatNumber(coin.invested)}</td>
+                                                <td className="px-2 sm:px-6 py-4 whitespace-nowrap">$ {formatNumber(currentPortfolio.toFixed(4))}</td>
                                                 <td className={`px-2 sm:px-6 py-4 whitespace-nowrap ${trade === 'profit' ? 'text-[#66C37B]' : 'text-[#F6685E]'}`}>
-                                                    <h2>{(currentPortfolio - coin.invested).toFixed(4)}</h2>
+                                                    <h2>{formatNumber((currentPortfolio - coin.invested).toFixed(4))}</h2>
                                                     <h2 className='font-bold pt-1 text-[12px]'>{trade === "profit" ? "+" : "-"} {allTimeGains}%</h2>
                                                 </td>
                                                 <td className="px-2 sm:px-6 py-4 whitespace-nowrap flex justify-evenly">

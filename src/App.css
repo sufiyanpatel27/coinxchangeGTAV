@@ -24,3 +24,29 @@
     align-items: center;
     gap: 10px;
 }
+
+.transition-container {
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+    height: 50px;
+}
+
+.animate-switch {
+    animation: switchAnimation 0.5s forwards;
+}
+
+@keyframes switchAnimation {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}

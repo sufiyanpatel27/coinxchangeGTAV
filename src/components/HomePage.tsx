@@ -39,7 +39,7 @@ export default function HomePage() {
                 .then((res) => dispatch(setUserInfo(res.data)))
                 .catch((err) => console.log("error here:", err))
         }
-    }, [])
+    }, [email])
 
     return (
         <div className={`${mode && "dark"}`}>

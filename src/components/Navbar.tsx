@@ -12,14 +12,20 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setUserInfo } from '../feature/coin/userSlice';
 import { AppDispatch } from '../app/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 
 export default function Navbar({ mode, handleTheme, activeTab }: { mode: boolean, handleTheme: () => void, activeTab: string }) {
+
+    const userInfo: any = useSelector((state: RootState) => state.userInfo);
+
     let navigate = useNavigate();
-    const { email, signOut } = useAuth();
+    const { email, signIn, signOut } = useAuth();
     const [loggedIn] = useState(email ? false : true);
     const [userSettings, setUserSettings] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -38,6 +44,33 @@ export default function Navbar({ mode, handleTheme, activeTab }: { mode: boolean
             }, 5500);
         }
     }, [userSettings]);
+
+    const [animate, setAnimate] = useState(false);
+
+    const handleSwitchUser = () => {
+        let email: string;
+        let password: string;
+        if (userInfo.userInfo.name === "Michael") {
+            email = "frank@coinxchange.com"
+            password = "frank@coinexchange"
+        } else {
+            email = "king_michael@coinxchange.com"
+            password = "king_michael"
+        }
+
+        setAnimate(true);
+        signIn(email, password)
+            .then(() => {
+                setTimeout(() => {
+                    // setCurrentUser(nextUser);
+                    setAnimate(false);
+                }, 500); // Duration of the animation
+            })
+            .catch(() => {
+                console.log("error");
+                setAnimate(false);
+            });
+    }
 
     return (
         <div className="bg-primary dark:bg-primary-dark h-[45px] flex justify-between items-center px-4 md:px-8">
@@ -85,9 +118,12 @@ export default function Navbar({ mode, handleTheme, activeTab }: { mode: boolean
                     {!mode && <img src={theme_light} alt="Light Theme" className='w-5' />}
                     {mode && <img src={theme} alt="Dark Theme" className='w-5' />}
                 </div>
-                <div className='font-semibold h-full cursor-pointer hover:bg-gray-800 flex w-16 justify-between items-center'>
-                    <img src={help} alt="Help" className='w-5' />
-                    HELP
+                <div
+                    onClick={handleSwitchUser}
+                    className={`font-bold h-full cursor-pointer hover:bg-gray-800 flex w-16 justify-between items-center transition-container ${animate ? "animate-switch" : ""
+                        }`}
+                >
+                    {userInfo.userInfo.name}
                 </div>
             </div>
             <div className='flex md:hidden items-center'>

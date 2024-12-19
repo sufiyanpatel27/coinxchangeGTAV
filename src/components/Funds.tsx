@@ -6,13 +6,13 @@ import axios from 'axios';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { setUserInfo } from "../feature/coin/userSlice";
+import { useAuth } from '../hooks/useAuth';
 
 
 
 export default function Funds() {
 
     const dispatch = useDispatch<AppDispatch>();
-
 
     const base_url = import.meta.env.VITE_BASE_URL || "http://localhost:5500/";
 
@@ -101,6 +101,21 @@ export default function Funds() {
         setTotalPortfolio(tempTotalPortfolio);
         setAllTimeGains(percentageDiff);
     }, [userInfo, allCoins]);
+
+    const { userId, email, token } = useAuth();
+
+    useEffect(() => {
+        document.title = "CoinXchange";
+        if (email) {
+            axios.get(base_url + 'userinfo/' + userId, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => dispatch(setUserInfo(res.data)))
+                .catch((err) => console.log("error here:", err))
+        }
+    }, [email])
 
     return (
         <div className={`${mode && "dark"}`}>

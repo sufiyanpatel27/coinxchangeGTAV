@@ -9,8 +9,12 @@ import { setCoins } from '../feature/coin/coinSlice';
 import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
 import axios from 'axios';
 
+import * as customTechnicalIndicators from '../feature/CustomTechnicalIndicators';
+
 
 export default function CoinInfoUp({ mode }: { mode: string }) {
+
+    const userInfo: any = useSelector((state: RootState) => state.userInfo);
 
     const dispatch = useDispatch();
     const allCoins = useSelector((state: RootState) => state.coin.allCoins); // Assuming allCoins is in your Redux store
@@ -37,6 +41,37 @@ export default function CoinInfoUp({ mode }: { mode: string }) {
 
 
                 candlestickSeries.setData(currCoin.data);
+
+
+                // SMA Only for Franklin
+                if (userInfo.userInfo.name === 'Franklin') {
+                    // SMA graph
+                    const smaShort = customTechnicalIndicators.calculateSMA(currCoin.data, 50); // Short-term SMA
+                    const smaLong = customTechnicalIndicators.calculateSMA(currCoin.data, 200); // Long-term SMA
+
+                    const shortSmaSeries = chart.addLineSeries({
+                        color: 'blue',
+                        lineWidth: 2,
+                    });
+                    const longSmaSeries = chart.addLineSeries({
+                        color: 'orange',
+                        lineWidth: 2,
+                    });
+
+                    shortSmaSeries.setData(smaShort);
+                    longSmaSeries.setData(smaLong);
+
+                    const crossovers = customTechnicalIndicators.findCrossovers(smaShort, smaLong);
+
+                    longSmaSeries.setMarkers(crossovers.map((marker: any) => ({
+                        time: marker.time,
+                        position: marker.position,
+                        color: marker.color,
+                        shape: marker.shape,
+                        size: marker.size,
+                        text: marker.text,
+                    })));
+                }
 
 
                 chart.priceScale("right").applyOptions({

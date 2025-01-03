@@ -46,8 +46,8 @@ export default function CoinInfoUp({ mode }: { mode: string }) {
                 // SMA Only for Franklin
                 if (userInfo.userInfo.name === 'Franklin') {
                     // SMA graph
-                    const smaShort = customTechnicalIndicators.calculateSMA(currCoin.data, 50); // Short-term SMA
-                    const smaLong = customTechnicalIndicators.calculateSMA(currCoin.data, 200); // Long-term SMA
+                    const smaShort: any = customTechnicalIndicators.calculateSMA(currCoin.data, 50); // Short-term SMA
+                    const smaLong: any = customTechnicalIndicators.calculateSMA(currCoin.data, 200); // Long-term SMA
 
                     const shortSmaSeries = chart.addLineSeries({
                         color: 'blue',

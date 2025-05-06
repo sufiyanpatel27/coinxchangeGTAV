@@ -117,6 +117,28 @@ export default function Funds() {
         }
     }, [email])
 
+
+    const handleSellCoin = (coin: any, currentPortfolio: any) => {
+        if (confirm("Do you want to proceed the Transaction?")) {
+            console.log(coin)
+            axios.post(base_url + 'sellCoin/' + userInfo.userInfo.userId,
+                {
+                    coinName: coin.name,
+                    coinSymbol: coin.symbol,
+                    coinAmount: coin.totalBalance,
+                    totalAmount: currentPortfolio
+                }
+            )
+                .then((res) => {
+                    dispatch(setUserInfo(res.data.newUserInfo));
+                    alert(`${coin.name} sold successfully.`)
+                })
+                .catch((err) => alert(err))
+        } else {
+            console.log("transactino canceled")
+        }
+    }
+
     return (
         <div className={`${mode && "dark"}`}>
             <div className='min-h-screen bg-[#F0F2F5] dark:bg-[#101623] text-white flex flex-col'>
@@ -229,7 +251,7 @@ export default function Funds() {
                                                 </td>
                                                 <td className="px-2 sm:px-6 py-4 whitespace-nowrap flex justify-evenly">
                                                     <button className='border rounded-md px-2 sm:px-4 py-1 font-bold text-[#ABB1BF] border-[#51545a] text-sm hover:bg-[#66C378] hover:text-white'>Deposit</button>
-                                                    <button className='border rounded-md px-2 sm:px-4 py-1 font-bold text-[#ABB1BF] border-[#51545a] text-sm hover:bg-[#F6685E] hover:text-white'>Withdraw</button>
+                                                    <button onClick={() => handleSellCoin(coin, currentPortfolio)} className='border rounded-md px-2 sm:px-4 py-1 font-bold text-[#ABB1BF] border-[#51545a] text-sm hover:bg-[#F6685E] hover:text-white'>Withdraw</button>
                                                 </td>
                                             </tr>
                                         );
